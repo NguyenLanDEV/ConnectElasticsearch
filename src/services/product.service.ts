@@ -1,26 +1,23 @@
 import ElasticsearchHelper from "../helpers/elasticsearch.helper";
 import ProductModel from "../models/product.model";
-import UserModel from "../models/user.model";
 const _ = require('lodash');
 
 export default class ProductService{
-  static create(payload: object){
-    let productModel = new ProductModel(payload)
-    productModel.assignTo(payload)
-    new UserModel().assignTo(payload)
-    return productModel
-    // ElasticsearchHelper.create(ProductModel)
+  static async create(payload: object){
+    const productModel = new ProductModel(payload)
+    return await ElasticsearchHelper.create(ProductModel.index, productModel)
   }
 
-  static update(){
-
+  static async update(id: string, payload: object){
+    const productModel = new ProductModel(payload)
+    return await ElasticsearchHelper.update(ProductModel.index, id, productModel)
   }
 
-  static delete(){
-
+  static async  delete(id: string){
+      return await ElasticsearchHelper.delete(ProductModel.index, id)
   }
 
-  static findById(){
-
+  static async findById(id: string){
+    return await ElasticsearchHelper.getByID(ProductModel.index, id)
   }
 }

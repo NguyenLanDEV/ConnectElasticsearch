@@ -13,6 +13,17 @@ export default class ElasticsearchHelper {
         return response
     }
 
+    static async getByID(index: string, id: string){
+        const response = await initElastic.client?.get(
+            {
+                index: index,
+                id: id
+            }
+        )
+
+        return response
+    }
+
     static async update(index: string, id: string, body: object){
         const response =  await initElastic.client?.update({
             index: index,
@@ -20,13 +31,22 @@ export default class ElasticsearchHelper {
             doc: body
          })
         
-         return response
+         return await response
     }
 
     static async create(index: string, body: object){
         const response = await initElastic.client?.index({
             index: index,
             document: body
+        })
+
+        return response
+    }
+
+    static async delete(index: string, id: string) {
+        const response = await initElastic.client?.delete({
+            index: index,
+            id: id
         })
 
         return response
