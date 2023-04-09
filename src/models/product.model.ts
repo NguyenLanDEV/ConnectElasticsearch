@@ -1,24 +1,22 @@
 import BaseModel from "./baseModel.model"
-export default class Product extends BaseModel{
-    static index = "products"
-    
-    public id: number;
-    public name: string;
-    public color: string;
-    public size: number;
-    public title: string;
-    public detail: string;
-    public price: number;
+const _ = require('lodash');
 
-    constructor(id: number,name :string, color: string ,size: number, title: string, detail: string, price: number){
+export default class ProductModel extends BaseModel{
+    static index = "products"
+    static validKeys = ['id', 'name', 'color', 'size', 'title', 'detail', 'price']
+
+    public id?: number;
+    public name?: string;
+    public color?: string;
+    public size?: number;
+    public title?: string;
+    public detail?: string;
+    public price?: number;
+
+    constructor(data: object){
         super()
-        this.id = id;
-        this.name = name;
-        this.color = color;
-        this.size = size;
-        this.title = title;
-        this.detail = detail;
-        this.price = price
+        const filteredData = _.pick(data, ProductModel.validKeys)
+        _.assign(this, filteredData)
     }
 
     getInfo() {

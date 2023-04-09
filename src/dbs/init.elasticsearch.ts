@@ -15,7 +15,6 @@ class Database {
 
         setInterval( function() {
             Database.getInstance().client?.ping()
-            .then( res => console.log("ping elasticsearch success"))
             .catch(err => console.log(err))
         }, 5000)
 

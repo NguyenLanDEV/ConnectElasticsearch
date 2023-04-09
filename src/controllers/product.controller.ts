@@ -1,10 +1,9 @@
-import express,{Request, Response, Express, NextFunction} from "express"
+import express,{Request, Response, NextFunction} from "express"
 import ProductService from "../services/product.service"
 
  class ProductController{
 
     index(req: Request,res :Response, next: NextFunction){
-        req.body
         return res.json({
             message: "succeess"
         })
@@ -12,7 +11,12 @@ import ProductService from "../services/product.service"
 
 
     store(req: Request, res: Response, next: NextFunction){
-        
+        let payload = req.body
+        let result =  ProductService.create(payload)
+        return res.json({
+            data: result,
+            status: 200
+        })
         // ProductService.create(payload)
     }
 
