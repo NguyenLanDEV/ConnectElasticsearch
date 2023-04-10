@@ -1,14 +1,10 @@
-import { Client } from "@elastic/elasticsearch"
 import initElastic from "../dbs/init.elasticsearch"
-import  {ConflictRequestError, BadRequestError, ElasticsearchError} from '../utils/exception.util'
+import  { ElasticsearchError} from '../utils/exception.util'
 
 export default class ElasticsearchHelper {
 
-    static async search(index: string, query: object){
-        const response = await initElastic.client?.search({
-           index: index,
-           query: query
-        }).catch(err => {
+    static async search(options: object){
+        const response = await initElastic.client?.search(options).catch(err => {
             if(err['name'] && err['name'] === "ResponseError"){
                 console.log(err['meta']['body'])
                 throw new ElasticsearchError(err)

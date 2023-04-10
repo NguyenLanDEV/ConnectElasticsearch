@@ -20,6 +20,7 @@ app.use( require("./routers/index"))
 
 //Error handling
 app.use((err: any, req: Request, res: Response, next: NextFunction) => {
+    console.log(err)
     const statusCode = err.status || 500
     return res.status(statusCode).json({
         messag: err.message,

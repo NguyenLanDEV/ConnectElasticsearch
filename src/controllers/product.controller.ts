@@ -1,12 +1,17 @@
-import express,{Request, Response, NextFunction, response} from "express"
+import {Request, Response, NextFunction} from "express"
 import ProductService from "../services/product.service"
 import { schemaCreateForm, schemaUpdateForm } from "../routers/products/validator"
 
 class ProductController{
 
     async index(req: Request,res :Response, next: NextFunction){
-        return res.json({
-            message: "succeess"
+        let response = await ProductService.index(req)
+
+        return res.json({   
+            status: "success",
+            from: req.body.from ?? 0,
+            size: req.body.size ?? 15,
+            data: response?.hits.hits
         })
     }
 
