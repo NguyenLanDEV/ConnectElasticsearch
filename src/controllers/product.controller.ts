@@ -4,7 +4,7 @@ import { schemaCreateForm, schemaUpdateForm } from "../routers/products/validato
 
 class ProductController{
 
-    index(req: Request,res :Response, next: NextFunction){
+    async index(req: Request,res :Response, next: NextFunction){
         return res.json({
             message: "succeess"
         })

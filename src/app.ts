@@ -1,4 +1,4 @@
-import express from "express"
+import express, { Request, Response, NextFunction  } from "express"
 import bodyParser from "body-parser"
 const compression = require('compression')
 const multer = require('multer') // v1.0.5
@@ -17,6 +17,16 @@ require('./dbs/init.elasticsearch')
 
 //init routers
 app.use( require("./routers/index"))
+
+//Error handling
+app.use((err: any, req: Request, res: Response, next: NextFunction) => {
+    const statusCode = err.status || 500
+    return res.status(statusCode).json({
+        messag: err.message,
+        status: 'error',
+        code: statusCode
+    })
+})
 
 
 module.exports = app

@@ -1,6 +1,6 @@
 import { Client } from "@elastic/elasticsearch"
 import initElastic from "../dbs/init.elasticsearch"
-
+import  {ConflictRequestError, BadRequestError, ElasticsearchError} from '../utils/exception.util'
 
 export default class ElasticsearchHelper {
 
@@ -8,6 +8,12 @@ export default class ElasticsearchHelper {
         const response = await initElastic.client?.search({
            index: index,
            query: query
+        }).catch(err => {
+            if(err['name'] && err['name'] === "ResponseError"){
+                console.log(err['meta']['body'])
+                throw new ElasticsearchError(err)
+            }
+            throw err
         })
 
         return response
@@ -19,7 +25,12 @@ export default class ElasticsearchHelper {
                 index: index,
                 id: id
             }
-        )
+        ).catch(err => {
+            if(err['name'] && err['name'] === "ResponseError"){
+                throw new ElasticsearchError("document missing")
+            }
+            throw err
+        })
 
         return response
     }
@@ -29,7 +40,12 @@ export default class ElasticsearchHelper {
             index: index,
             id: id,
             doc: body
-         })
+         }).catch(err => {
+            if(err['name'] && err['name'] === "ResponseError"){
+                throw new ElasticsearchError("document missing")
+            }
+            throw err
+        })
         
          return await response
     }
@@ -38,6 +54,11 @@ export default class ElasticsearchHelper {
         const response = await initElastic.client?.index({
             index: index,
             document: body
+        }).catch(err => {
+            if(err['name'] && err['name'] === "ResponseError"){
+                throw new ElasticsearchError("document missing")
+            }
+            throw err
         })
 
         return response
@@ -47,6 +68,11 @@ export default class ElasticsearchHelper {
         const response = await initElastic.client?.delete({
             index: index,
             id: id
+        }).catch(err => {
+            if(err['name'] && err['name'] === "ResponseError"){
+                throw new ElasticsearchError("document missing")
+            }
+            throw err
         })
 
         return response
